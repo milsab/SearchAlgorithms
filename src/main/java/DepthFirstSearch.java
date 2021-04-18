@@ -1,33 +1,32 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Stack;
 
-public class BestFirstSearch extends Search{
-    // define a priority queue (min heap) that always returns a node with the smallest heuristic value (h value)
-    private PriorityQueue<Node> minHeap = new PriorityQueue<>(new Comparator<Node>() {
-        @Override
-        public int compare(Node n1, Node n2) {
-            return n1.getH() - n2.getH();
-        }
-    });
+public class DepthFirstSearch extends Search{
+    private Stack<Node> stack = new Stack<>();
 
 
     @Override
-    public Result search(Node root, int[][] goal){
-        minHeap.add(root);
+    public Result search(Node root, int[][] goal) {
+        time = 0;
+        space = 0;
+        solution = new Node();
+
+        stack.push(root);
 
         // Start Timer
         long startTime = System.currentTimeMillis();
-        while(!minHeap.isEmpty()){
-
+        while(!stack.isEmpty()){
             // check the size of the queue and update if it is bigger than the previous max size
-            space = minHeap.size() > space ? minHeap.size() : space;
-
-            Node node = minHeap.remove();
+            space = stack.size() > space ? stack.size() : space;
+            Node node = stack.pop();
 
             // increase time by one because we popped off one node from the stack
             time++;
-
             path.add(node.getRep());
 
+            // Check to see whether current node is the final goal or not
             if(node.isGoal(goal)) {
                 solution = node;
                 break;
@@ -39,66 +38,61 @@ public class BestFirstSearch extends Search{
             int row = node.getRow();        // get the row index of the blank tile
             int col = node.getCol();        // get the column index of the blank tile
 
-            //region EXPAND THE CURRENT NODE
-            // NOTE: in this algorithm we do not consider g(n), so f(n) = h(n)
+            //region EXPAND THE CURRENT NODE IN DFS ORDER
             // move up the blank tile
             if(row - 1 >= 0){
                 int[][] newGrid = node.copy();
-                int cost = newGrid[row -1][col];
+                int cost = newGrid[row - 1][col];
                 int depth = node.getDepth();
-                int h1 = node.calculateH1(goal);
                 newGrid[row][col] = newGrid[row - 1][col];
                 newGrid[row - 1][col] = 0;
-                Node newNode = new Node(newGrid, row - 1, col, node.getG() + cost, h1, depth + 1);
+                Node newNode = new Node(newGrid, row - 1, col, node.getG() + cost, depth + 1);
 
                 // add the new generated node to the queue if it has not visited before
                 if(!visited.contains(newNode.serialize()))
-                    minHeap.add(newNode);
+                    stack.push(newNode);
             }
 
             // move down the blank tile
             if(row + 1 < grid.length){
                 int[][] newGrid = node.copy();
-                int cost = newGrid[row + 1][col];
-                int h1 = node.calculateH1(goal);
-                int depth = node.getDepth();
                 newGrid[row][col] = newGrid[row + 1][col];
+                int cost = newGrid[row + 1][col];
+                int depth = node.getDepth();
                 newGrid[row + 1][col] = 0;
-                Node newNode = new Node(newGrid, row + 1, col, node.getG() + cost, h1, depth + 1);
+                Node newNode = new Node(newGrid, row + 1, col, node.getG() + cost, depth + 1);
 
                 // add the new generated node to the queue if it has not visited before
                 if(!visited.contains(newNode.serialize()))
-                    minHeap.add(newNode);
+                    stack.push(newNode);
             }
 
             // move left the blank tile
             if(col - 1 >= 0){
                 int[][] newGrid = node.copy();
+                newGrid[row][col] = newGrid[row][col - 1];
                 int cost = newGrid[row][col - 1];
                 int depth = node.getDepth();
-                int h1 = node.calculateH1(goal);
-                newGrid[row][col] = newGrid[row][col - 1];
                 newGrid[row][col - 1] = 0;
-                Node newNode = new Node(newGrid, row, col - 1, node.getG() + cost, h1, depth + 1);
+                Node newNode = new Node(newGrid, row, col - 1, node.getG() + cost, depth + 1);
 
                 // add the new generated node to the queue if it has not visited before
                 if(!visited.contains(newNode.serialize()))
-                    minHeap.add(newNode);
+                    stack.push(newNode);
             }
 
             // move right the blank tile
             if(col + 1 < grid[0].length){
                 int[][] newGrid = node.copy();
-                int cost = newGrid[row][col +1];
-                int h1 = node.calculateH1(goal);
-                int depth = node.getDepth();
                 newGrid[row][col] = newGrid[row][col + 1];
+                int cost = newGrid[row][col + 1];
+                int depth = node.getDepth();
                 newGrid[row][col + 1] = 0;
-                Node newNode = new Node(newGrid, row, col + 1, node.getG() + cost, h1, depth + 1);
+                Node newNode = new Node(newGrid, row, col + 1, node.getG() + cost, depth + 1);
 
                 // add the new generated node to the queue if it has not visited before
                 if(!visited.contains(newNode.serialize()))
-                    minHeap.add(newNode);
+                    stack.push(newNode);
             }
             //endregion
         }

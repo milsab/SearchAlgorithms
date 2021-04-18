@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 public class Node {
 
     //region Private Attributes
@@ -9,23 +11,41 @@ public class Node {
     private int[][] rep = new int[][]{}; // representation od the node as a 2d array
 
     private int row, col;   // the location of the blank tile (represented as 0)
+
     //endregion
 
     //region Constructors
     public Node() {
     }
 
-    public Node(int[][] rep, int row, int col) {
+    // use for DFS and BFS Algorithms
+    public Node(int[][] rep, int row, int col, int cost, int depth) {
         this.rep = rep;
         this.row = row;
         this.col = col;
+        this.g = cost;
+        this.depth = depth;
     }
 
-    public Node(int[][] rep, int row, int col, int f) {
+    // use for GBF (Greedy Best Search First) algorithm
+    public Node(int[][] rep, int row, int col, int cost, int heuristic, int depth) {
         this.rep = rep;
         this.row = row;
         this.col = col;
+        this.g = cost;
+        this.h = heuristic;
+        this.depth = depth;
+    }
+
+    // use for A* algorithm
+    public Node(int[][] rep, int row, int col, int cost, int heuristic, int f, int depth) {
+        this.rep = rep;
+        this.row = row;
+        this.col = col;
+        this.g = cost;
+        this.h = heuristic;
         this.f = f;
+        this.depth = depth;
     }
 
     //endregion
@@ -55,6 +75,22 @@ public class Node {
         }
         setH(count);
         return h;
+    }
+
+    // Calculate the heuristic function h2(n) = sum of Manhattan distances between all tiles and their correct positions
+    public int calculateH2(HashMap<Integer, int[]> goalMap){
+        int manhattanDistance = 0;
+        for(int i = 0; i < rep.length; i++) {
+            for(int j = 0; j < rep[0].length; j++){
+                int currentRow = i;
+                int currentCol = j;
+                int targetRow = goalMap.get(rep[i][j])[0];
+                int targetCol = goalMap.get(rep[i][j])[1];
+
+                manhattanDistance += Math.abs(targetRow - currentRow) + Math.abs(targetCol - currentCol);
+            }
+        }
+        return manhattanDistance;
     }
 
     // serialize the 2d-array representation of the node to a simple string

@@ -30,7 +30,9 @@ public class Main {
                 {7, 6, 5}
         };
 
-        Node root = new Node(mediumRoot, 1, 1);
+        Node root = new Node(mediumRoot, 1, 0, 0, 0);
+
+//        Node root = new Node(mediumRoot, 1, 1, 0, 0, 0, 0);
 
 //        List<List<int[][]>> bfsPath = bfs(root, goal);
 //        printBFSPath(bfsPath);
@@ -53,26 +55,34 @@ public class Main {
         while(choice != 8){
             switch (choice){
                 case 1:
-                    List<List<int[][]>> brfsPath = brfs(root, goal);
-                    printBFSPath(brfsPath);
+                    BreadthFirstSearch bfs = new BreadthFirstSearch();
+                    Result bfsResult = bfs.search(root, goal);
+                    bfsResult.displayResult();
                     break;
                 case 2:
-                    Result dfsPath = dfs(root, goal);
-                    printPath(dfsPath);
+                    DepthFirstSearch dfs = new DepthFirstSearch();
+                    Result dfsResult = dfs.search(root, goal);
+                    dfsResult.displayResult();
                     break;
                 case 3:
                     UniformCostSearch usc = new UniformCostSearch();
-                    Result uscPath = usc.search(root, goal);
-                    printPath(uscPath);
+                    Result uscResult = usc.search(root, goal);
+                    uscResult.displayResult();
                     break;
                 case 4:
-                    BestFirstSearch bfs = new BestFirstSearch();
-                    Result bfsPath = bfs.search(root, goal);
-                    printPath(bfsPath);
+                    BestFirstSearch gbf = new BestFirstSearch();
+                    Result gbfResult = gbf.search(root, goal);
+                    gbfResult.displayResult();
                     break;
                 case 5:
+                    A_StarSearch as1 = new A_StarSearch();
+                    Result as1Result = as1.search(root, goal, (byte) 1);
+                    as1Result.displayResult();
                     break;
                 case 6:
+                    A_StarSearch as2 = new A_StarSearch();
+                    Result as2Result = as2.search(root, goal, (byte) 2);
+                    as2Result.displayResult();
                     break;
                 case 7:
                     break;
@@ -101,90 +111,91 @@ public class Main {
 
     // Breath First Search
     public static List<List<int[][]>> brfs(Node root, int[][] goal){
-        Queue<Node> q = new LinkedList<>();
-        HashSet<String> visited = new HashSet<>();
-        List<List<int[][]>> path = new ArrayList<>();
-
-        q.add(root);
-
-        // Start Timer
-        long startTime = System.currentTimeMillis();
-        while(!q.isEmpty()){
-
-            int size = q.size();
-            path.add(new ArrayList<>());
-            for(int i = 0; i < size; i++){
-
-                Node node = q.remove();
-                path.get(path.size() - 1).add(node.getRep());        // log the current node in our traversed path
-
-                // Check to see whether current node is the final goal or not
-                if(isGoal(node, goal)){
-                    return path;
-                }
-
-                visited.add(node.serialize());  // add the serialized version of the current node to the visited nodes
-
-                int[][] grid = node.getRep();   // get the current grid of the node
-                int row = node.getRow();        // get the row index of the blank tile
-                int col = node.getCol();        // get the column index of the blank tile
-
-
-                //region EXPAND THE CURRENT NODE IN BFS ORDER
-                // move up the blank tile
-                if(row - 1 >= 0){
-                    int[][] newGrid = node.copy();
-                    newGrid[row][col] = newGrid[row - 1][col];
-                    newGrid[row - 1][col] = 0;
-                    Node newNode = new Node(newGrid, row - 1, col);
-
-                    // add the new generated node to the queue if it has not visited before
-                    if(!visited.contains(newNode.serialize()))
-                        q.add(newNode);
-                }
-
-                // move down the blank tile
-                if(row + 1 < grid.length){
-                    int[][] newGrid = node.copy();
-                    newGrid[row][col] = newGrid[row + 1][col];
-                    newGrid[row + 1][col] = 0;
-                    Node newNode = new Node(newGrid, row + 1, col);
-
-                    // add the new generated node to the queue if it has not visited before
-                    if(!visited.contains(newNode.serialize()))
-                        q.add(newNode);
-                }
-
-                // move left the blank tile
-                if(col - 1 >= 0){
-                    int[][] newGrid = node.copy();
-                    newGrid[row][col] = newGrid[row][col - 1];
-                    newGrid[row][col - 1] = 0;
-                    Node newNode = new Node(newGrid, row, col - 1);
-
-                    // add the new generated node to the queue if it has not visited before
-                    if(!visited.contains(newNode.serialize()))
-                        q.add(newNode);
-                }
-
-                // move right the blank tile
-                if(col + 1 < grid[0].length){
-                    int[][] newGrid = node.copy();
-                    newGrid[row][col] = newGrid[row][col + 1];
-                    newGrid[row][col + 1] = 0;
-                    Node newNode = new Node(newGrid, row, col + 1);
-
-                    // add the new generated node to the queue if it has not visited before
-                    if(!visited.contains(newNode.serialize()))
-                        q.add(newNode);
-                }
-                //endregion
-            }
-        }
-        // End Timer
-        long endTime = System.currentTimeMillis();
-        System.out.println("That took " + (endTime - startTime) + " milliseconds");
-        return path;
+//        Queue<Node> q = new LinkedList<>();
+//        HashSet<String> visited = new HashSet<>();
+//        List<List<int[][]>> path = new ArrayList<>();
+//
+//        q.add(root);
+//
+//        // Start Timer
+//        long startTime = System.currentTimeMillis();
+//        while(!q.isEmpty()){
+//
+//            int size = q.size();
+//            path.add(new ArrayList<>());
+//            for(int i = 0; i < size; i++){
+//
+//                Node node = q.remove();
+//                path.get(path.size() - 1).add(node.getRep());        // log the current node in our traversed path
+//
+//                // Check to see whether current node is the final goal or not
+//                if(isGoal(node, goal)){
+//                    return path;
+//                }
+//
+//                visited.add(node.serialize());  // add the serialized version of the current node to the visited nodes
+//
+//                int[][] grid = node.getRep();   // get the current grid of the node
+//                int row = node.getRow();        // get the row index of the blank tile
+//                int col = node.getCol();        // get the column index of the blank tile
+//
+//
+//                //region EXPAND THE CURRENT NODE IN BFS ORDER
+//                // move up the blank tile
+//                if(row - 1 >= 0){
+//                    int[][] newGrid = node.copy();
+//                    newGrid[row][col] = newGrid[row - 1][col];
+//                    newGrid[row - 1][col] = 0;
+//                    Node newNode = new Node(newGrid, row - 1, col);
+//
+//                    // add the new generated node to the queue if it has not visited before
+//                    if(!visited.contains(newNode.serialize()))
+//                        q.add(newNode);
+//                }
+//
+//                // move down the blank tile
+//                if(row + 1 < grid.length){
+//                    int[][] newGrid = node.copy();
+//                    newGrid[row][col] = newGrid[row + 1][col];
+//                    newGrid[row + 1][col] = 0;
+//                    Node newNode = new Node(newGrid, row + 1, col);
+//
+//                    // add the new generated node to the queue if it has not visited before
+//                    if(!visited.contains(newNode.serialize()))
+//                        q.add(newNode);
+//                }
+//
+//                // move left the blank tile
+//                if(col - 1 >= 0){
+//                    int[][] newGrid = node.copy();
+//                    newGrid[row][col] = newGrid[row][col - 1];
+//                    newGrid[row][col - 1] = 0;
+//                    Node newNode = new Node(newGrid, row, col - 1);
+//
+//                    // add the new generated node to the queue if it has not visited before
+//                    if(!visited.contains(newNode.serialize()))
+//                        q.add(newNode);
+//                }
+//
+//                // move right the blank tile
+//                if(col + 1 < grid[0].length){
+//                    int[][] newGrid = node.copy();
+//                    newGrid[row][col] = newGrid[row][col + 1];
+//                    newGrid[row][col + 1] = 0;
+//                    Node newNode = new Node(newGrid, row, col + 1);
+//
+//                    // add the new generated node to the queue if it has not visited before
+//                    if(!visited.contains(newNode.serialize()))
+//                        q.add(newNode);
+//                }
+//                //endregion
+//            }
+//        }
+//        // End Timer
+//        long endTime = System.currentTimeMillis();
+//        System.out.println("That took " + (endTime - startTime) + " milliseconds");
+//        return path;
+        return null;
     }
 
     // Depth First Search
@@ -210,63 +221,64 @@ public class Main {
             int row = node.getRow();        // get the row index of the blank tile
             int col = node.getCol();        // get the column index of the blank tile
 
-            //region EXPAND THE CURRENT NODE IN DFS ORDER
-            // move up the blank tile
-            if(row - 1 >= 0){
-                int[][] newGrid = node.copy();
-                newGrid[row][col] = newGrid[row - 1][col];
-                newGrid[row - 1][col] = 0;
-                Node newNode = new Node(newGrid, row - 1, col);
-
-                // add the new generated node to the queue if it has not visited before
-                if(!visited.contains(newNode.serialize()))
-                    stack.push(newNode);
-            }
-
-            // move down the blank tile
-            if(row + 1 < grid.length){
-                int[][] newGrid = node.copy();
-                newGrid[row][col] = newGrid[row + 1][col];
-                newGrid[row + 1][col] = 0;
-                Node newNode = new Node(newGrid, row + 1, col);
-
-                // add the new generated node to the queue if it has not visited before
-                if(!visited.contains(newNode.serialize()))
-                    stack.push(newNode);
-            }
-
-            // move left the blank tile
-            if(col - 1 >= 0){
-                int[][] newGrid = node.copy();
-                newGrid[row][col] = newGrid[row][col - 1];
-                newGrid[row][col - 1] = 0;
-                Node newNode = new Node(newGrid, row, col - 1);
-
-                // add the new generated node to the queue if it has not visited before
-                if(!visited.contains(newNode.serialize()))
-                    stack.push(newNode);
-            }
-
-            // move right the blank tile
-            if(col + 1 < grid[0].length){
-                int[][] newGrid = node.copy();
-                newGrid[row][col] = newGrid[row][col + 1];
-                newGrid[row][col + 1] = 0;
-                Node newNode = new Node(newGrid, row, col + 1);
-
-                // add the new generated node to the queue if it has not visited before
-                if(!visited.contains(newNode.serialize()))
-                    stack.push(newNode);
-            }
-            //endregion
+//            //region EXPAND THE CURRENT NODE IN DFS ORDER
+//            // move up the blank tile
+//            if(row - 1 >= 0){
+//                int[][] newGrid = node.copy();
+//                newGrid[row][col] = newGrid[row - 1][col];
+//                newGrid[row - 1][col] = 0;
+//                Node newNode = new Node(newGrid, row - 1, col);
+//
+//                // add the new generated node to the queue if it has not visited before
+//                if(!visited.contains(newNode.serialize()))
+//                    stack.push(newNode);
+//            }
+//
+//            // move down the blank tile
+//            if(row + 1 < grid.length){
+//                int[][] newGrid = node.copy();
+//                newGrid[row][col] = newGrid[row + 1][col];
+//                newGrid[row + 1][col] = 0;
+//                Node newNode = new Node(newGrid, row + 1, col);
+//
+//                // add the new generated node to the queue if it has not visited before
+//                if(!visited.contains(newNode.serialize()))
+//                    stack.push(newNode);
+//            }
+//
+//            // move left the blank tile
+//            if(col - 1 >= 0){
+//                int[][] newGrid = node.copy();
+//                newGrid[row][col] = newGrid[row][col - 1];
+//                newGrid[row][col - 1] = 0;
+//                Node newNode = new Node(newGrid, row, col - 1);
+//
+//                // add the new generated node to the queue if it has not visited before
+//                if(!visited.contains(newNode.serialize()))
+//                    stack.push(newNode);
+//            }
+//
+//            // move right the blank tile
+//            if(col + 1 < grid[0].length){
+//                int[][] newGrid = node.copy();
+//                newGrid[row][col] = newGrid[row][col + 1];
+//                newGrid[row][col + 1] = 0;
+//                Node newNode = new Node(newGrid, row, col + 1);
+//
+//                // add the new generated node to the queue if it has not visited before
+//                if(!visited.contains(newNode.serialize()))
+//                    stack.push(newNode);
+//            }
+//            //endregion
 
         }
         // End Timer
-        long endTime = System.currentTimeMillis();
-
-        Result result = new Result(path, endTime - startTime);
-
-        return result;
+//        long endTime = System.currentTimeMillis();
+//
+//        Result result = new Result(path, endTime - startTime);
+//
+//        return result;
+        return null;
     }
 
     public static boolean isGoal(Node node, int[][] goal){
@@ -299,19 +311,19 @@ public class Main {
     }
 
     public static void printPath(Result result){
-        int count = 0;
-        List<int[][]> traversePath = result.getTraversePath();
-        long time = result.time;
-        for (int[][] node: traversePath) {
-            for(int i = 0; i < node.length; i++){
-                for(int j = 0; j < node[0].length; j++){
-                    System.out.print(node[i][j] + " ");
-                }
-                System.out.println();
-                count++;
-            }
-            System.out.println("------");
-        }
-        System.out.println(String.format("Traversing Nodes: %s\nTotal Time: %s milliseconds\n======", count, time));
+//        int count = 0;
+//        List<int[][]> traversePath = result.getTraversePath();
+//        long time = result.time;
+//        for (int[][] node: traversePath) {
+//            for(int i = 0; i < node.length; i++){
+//                for(int j = 0; j < node[0].length; j++){
+//                    System.out.print(node[i][j] + " ");
+//                }
+//                System.out.println();
+//                count++;
+//            }
+//            System.out.println("------");
+//        }
+//        System.out.println(String.format("Traversing Nodes: %s\nTotal Time: %s milliseconds\n======", count, time));
     }
 }
