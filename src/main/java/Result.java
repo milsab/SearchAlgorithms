@@ -2,7 +2,6 @@ import java.util.*;
 
 public class Result {
 
-
     private String name;    // name of algorithm
     private DIFFICULTY difficulty;
     private Node solution;
@@ -32,7 +31,7 @@ public class Result {
         this.executionTime = executionTime;
     }
 
-    public void displayResult(){
+    public void displayResult(DIFFICULTY difficulty){
 
         for (int[][] node: traversePath) {
             for(int i = 0; i < node.length; i++){
@@ -43,32 +42,32 @@ public class Result {
             }
             System.out.println("------");
         }
-        System.out.println("Solution From Start to Goal: " + solution.getPathFromStart());
+        System.out.println("Solution From " + difficulty.name() + " Start to Goal: " + solution.getPathFromStart());
         System.out.println("Length: " + solution.getDepth());
         System.out.println("Cost: " + solution.getG());
         System.out.println("Time: " + time);
         System.out.println("Space: " + solution.getDepth());
-        System.out.println("Execution Time: " + executionTime + " milliseconds");
+//        System.out.println("Execution Time: " + executionTime + " milliseconds");
 
     }
 
     public void generateReport(HashMap<DIFFICULTY, List<Result>> results){
-        System.out.println(String.format("%-10s|%10s|%10s|%10s|%10s|%20s|", "Algorithm","Length","Cost", "Time", "Space", "Execution Time"));
+        System.out.println(String.format("%-10s|%10s|%10s|%10s|%10s|", "Algorithm","Length","Cost", "Time", "Space"));
+        System.out.println("=======================================================");
 
         List<Result> additionalReport = new ArrayList<>();
 
         for (DIFFICULTY difficulty : results.keySet()) {
-            System.out.println("==========");
+            System.out.println();
             System.out.println(difficulty);
-            System.out.println("==========");
+            System.out.println("-------------------------------------------------------");
             for(Result result : results.get(difficulty)){
-                System.out.println(String.format("%-10s|%10d|%10d|%10d|%10d|%20d|",
+                System.out.println(String.format("%-10s|%10d|%10d|%10d|%10d|",
                         result.name,
                         result.getSolution().getDepth(),
                         result.getSolution().getG(),
                         result.time,
-                        result.space,
-                        result.executionTime));
+                        result.space));
 
                 if(result.name.equals("BFS") || result.name.equals("A*2") || result.name.equals("A*3") )
                     additionalReport.add(result);
