@@ -97,6 +97,22 @@ public class Node {
         return manhattanDistance;
     }
 
+    // Calculate the heuristic function h3(n) = sum of Euclidean distances between all tiles and their correct positions
+    public int calculateH3(HashMap<Integer, int[]> goalMap){
+        int euclideanDistance = 0;
+        for(int i = 0; i < rep.length; i++) {
+            for(int j = 0; j < rep[0].length; j++){
+                int currentRow = i;
+                int currentCol = j;
+                int targetRow = goalMap.get(rep[i][j])[0];
+                int targetCol = goalMap.get(rep[i][j])[1];
+
+                euclideanDistance += Math.sqrt(Math.pow(targetRow - currentRow, 2) + Math.pow(targetCol - currentCol, 2));
+            }
+        }
+        return euclideanDistance;
+    }
+
     // serialize the 2d-array representation of the node to a simple string
     public String serialize(){
         String result = "";

@@ -2,11 +2,6 @@ import java.util.*;
 
 public class Main {
 
-//    public enum DIFFICULTY {
-//        EASY,
-//        MEDIUM,
-//        HARD
-//    }
 
     static HashMap<DIFFICULTY, List<Result>> results = new HashMap<>();
 //    static List<Result> results = new ArrayList<>();
@@ -46,7 +41,7 @@ public class Main {
         int choice = -1;
         printMenu();
         choice = scan.nextInt();
-        while(choice != 8){
+        while(choice != 9){
             switch (choice){
                 case 1:
                     BreadthFirstSearch bfs = new BreadthFirstSearch();
@@ -127,11 +122,24 @@ public class Main {
                     as2HardResult.displayResult();
                     break;
                 case 7:
+                    A_StarSearch as3 = new A_StarSearch();
+                    Result as3EasyResult = as3.search(easyNode, goal, (byte) 3, DIFFICULTY.EASY);
+                    as3EasyResult.displayResult();
+
+                    as3 = new A_StarSearch();
+                    Result as3MediumResult = as3.search(mediumNode, goal, (byte) 3, DIFFICULTY.MEDIUM);
+                    as3MediumResult.displayResult();
+
+                    as3 = new A_StarSearch();
+                    Result as3HardResult = as3.search(hardNode, goal, (byte) 3, DIFFICULTY.HARD);
+                    as3HardResult.displayResult();
+                    break;
+                case 8:
                     Result allResult = new Result();
                     allResult.generateReport(results);
                     break;
                 default:
-                    System.out.println("Invalid Choice! Please choose a number between 1 to 8.");
+                    System.out.println("Invalid Choice! Please choose a number between 1 to 9.");
             }
             printMenu();
             choice = scan.nextInt();
@@ -144,13 +152,14 @@ public class Main {
     public static void printMenu(){
         System.out.println("\nPlease choose one of the following search algorithms:\n" +
                 "1) Breath First Search\n" +
-                "2) Depth First Serarch\n" +
+                "2) Depth First Search\n" +
                 "3) Uniform Cost Search\n" +
                 "4) Best First Search\n" +
                 "5) A* (h1)\n" +
                 "6) A* (h2)\n" +
-                "7) Report\n" +
-                "8) Exit\n");
+                "7) A* (h3)\n" +
+                "8) Report\n" +
+                "9) Exit\n");
     }
 
     // Breath First Search

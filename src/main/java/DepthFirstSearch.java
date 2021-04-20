@@ -47,7 +47,7 @@ public class DepthFirstSearch extends Search{
                 newGrid[row][col] = newGrid[row - 1][col];
                 newGrid[row - 1][col] = 0;
                 Node newNode = new Node(newGrid, row - 1, col, node.getG() + cost,
-                        depth + 1, node.getPathFromStart() + "-> Up ");
+                        depth + 1, "");//node.getPathFromStart() + "-> Up(" + cost + ") ");
 
                 // add the new generated node to the queue if it has not visited before
                 if(!visited.contains(newNode.serialize()))
@@ -62,7 +62,7 @@ public class DepthFirstSearch extends Search{
                 int depth = node.getDepth();
                 newGrid[row + 1][col] = 0;
                 Node newNode = new Node(newGrid, row + 1, col, node.getG() + cost,
-                        depth + 1, node.getPathFromStart() + "-> Down ");
+                        depth + 1, "");//node.getPathFromStart() + "-> Down(" + cost + ") ");
 
                 // add the new generated node to the queue if it has not visited before
                 if(!visited.contains(newNode.serialize()))
@@ -77,7 +77,7 @@ public class DepthFirstSearch extends Search{
                 int depth = node.getDepth();
                 newGrid[row][col - 1] = 0;
                 Node newNode = new Node(newGrid, row, col - 1, node.getG() + cost,
-                        depth + 1, node.getPathFromStart() + "-> Left ");
+                        depth + 1, "");//node.getPathFromStart() + "-> Left(" + cost + ") ");
 
                 // add the new generated node to the queue if it has not visited before
                 if(!visited.contains(newNode.serialize()))
@@ -92,7 +92,7 @@ public class DepthFirstSearch extends Search{
                 int depth = node.getDepth();
                 newGrid[row][col + 1] = 0;
                 Node newNode = new Node(newGrid, row, col + 1, node.getG() + cost,
-                        depth + 1, node.getPathFromStart() + "-> Right ");
+                        depth + 1, "");//node.getPathFromStart() + "-> Right(" + cost + ") ");
 
                 // add the new generated node to the queue if it has not visited before
                 if(!visited.contains(newNode.serialize()))

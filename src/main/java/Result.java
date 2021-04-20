@@ -55,6 +55,7 @@ public class Result {
     public void generateReport(HashMap<DIFFICULTY, List<Result>> results){
         System.out.println(String.format("%-10s|%10s|%10s|%10s|%10s|%20s|", "Algorithm","Length","Cost", "Time", "Space", "Execution Time"));
 
+        List<Result> additionalReport = new ArrayList<>();
 
         for (DIFFICULTY difficulty : results.keySet()) {
             System.out.println("==========");
@@ -68,8 +69,18 @@ public class Result {
                         result.time,
                         result.space,
                         result.executionTime));
+
+                if(result.name.equals("BFS") || result.name.equals("A*2") || result.name.equals("A*3") )
+                    additionalReport.add(result);
             }
-            System.out.println();
+
+
+        }
+        System.out.println("\n\nAdditional Reports:");
+        for(Result addRep : additionalReport){
+            System.out.println(addRep.name);
+            System.out.println(addRep.getSolution().getPathFromStart());
+
         }
     }
 

@@ -13,6 +13,7 @@ public class A_StarSearch extends Search{
     private HashMap<String, Integer> visitedMap = new HashMap<>();
 
     // a hashmap that map the value of each tile in the goal to its positions
+    // the value is an array of 2 elements. The first elements is row the second element is column
     private HashMap<Integer, int[]> goalMap;
 
 
@@ -31,8 +32,8 @@ public class A_StarSearch extends Search{
     // if the type = 1 then the A* will search with h1 function
     // if the type = 2 then the A8 will search with h2 function
     public Result search(Node root, int[][] goal, byte type, DIFFICULTY difficulty) {
-        // check the edge case
-        if(type != 1 && type != 2)
+        // check the edge cases
+        if(type != 1 && type != 2 && type != 3)
             return null;
 
         // map the value of each tile in the goal to its positions
@@ -67,6 +68,8 @@ public class A_StarSearch extends Search{
 
             //region EXPAND THE CURRENT NODE
             // NOTE: in this algorithm we do not consider g(n), so f(n) = h(n)
+
+
             // move up the blank tile
             if(row - 1 >= 0){
                 int[][] newGrid = node.copy();
@@ -76,15 +79,18 @@ public class A_StarSearch extends Search{
                 if (type == 1) {
                     int h1 = node.calculateH1(goal);
                     h = h1;
-                } else {
+                } else if (type == 2) {
                     int h2 = node.calculateH2(goalMap);
                     h = h2;
+                } else {
+                    int h3 = node.calculateH3(goalMap);
+                    h = h3;
                 }
                 int f = cost + h;
                 newGrid[row][col] = newGrid[row - 1][col];
                 newGrid[row - 1][col] = 0;
                 Node newNode = new Node(newGrid, row - 1, col, node.getG() + cost, h, node.getF() + f,
-                        depth + 1, node.getPathFromStart() + "-> Up ");
+                        depth + 1, node.getPathFromStart() + "-> Up(" + cost + ") ");
 
                 // add the new generated node to the priority queue if it has not visited before or
                 // its previous f value is larger than its current f value
@@ -107,15 +113,18 @@ public class A_StarSearch extends Search{
                 if (type == 1) {
                     int h1 = node.calculateH1(goal);
                     h = h1;
-                } else {
+                } else if (type == 2) {
                     int h2 = node.calculateH2(goalMap);
                     h = h2;
+                } else {
+                    int h3 = node.calculateH3(goalMap);
+                    h = h3;
                 }
                 int f = cost + h;
                 newGrid[row][col] = newGrid[row + 1][col];
                 newGrid[row + 1][col] = 0;
                 Node newNode = new Node(newGrid, row + 1, col, node.getG() + cost, h, node.getF() + f,
-                        depth + 1, node.getPathFromStart() + "-> Down ");
+                        depth + 1, node.getPathFromStart() + "-> Down(" + cost + ") ");
 
                 // add the new generated node to the priority queue if it has not visited before or
                 // its previous f value is larger than its current f value
@@ -138,15 +147,18 @@ public class A_StarSearch extends Search{
                 if (type == 1) {
                     int h1 = node.calculateH1(goal);
                     h = h1;
-                } else {
+                } else if (type == 2){
                     int h2 = node.calculateH2(goalMap);
                     h = h2;
+                } else {
+                    int h3 = node.calculateH3(goalMap);
+                    h = h3;
                 }
                 int f = cost + h;
                 newGrid[row][col] = newGrid[row][col - 1];
                 newGrid[row][col - 1] = 0;
                 Node newNode = new Node(newGrid, row, col - 1, node.getG() + cost, h, node.getF() + f,
-                        depth + 1, node.getPathFromStart() + "-> Left ");
+                        depth + 1, node.getPathFromStart() + "-> Left(" + cost + ") ");
 
                 // add the new generated node to the priority queue if it has not visited before or
                 // its previous f value is larger than its current f value
@@ -169,15 +181,18 @@ public class A_StarSearch extends Search{
                 if (type == 1) {
                     int h1 = node.calculateH1(goal);
                     h = h1;
-                } else {
+                } else if(type == 3){
                     int h2 = node.calculateH2(goalMap);
                     h = h2;
+                } else {
+                    int h3 = node.calculateH3(goalMap);
+                    h = h3;
                 }
                 int f = cost + h;
                 newGrid[row][col] = newGrid[row][col + 1];
                 newGrid[row][col + 1] = 0;
                 Node newNode = new Node(newGrid, row, col + 1, node.getG() + cost, h, node.getF() + f,
-                        depth + 1, node.getPathFromStart() + "-> Right ");
+                        depth + 1, node.getPathFromStart() + "-> Right(" + cost + ") ");
 
                 // add the new generated node to the priority queue if it has not visited before or
                 // its previous f value is larger than its current f value
@@ -190,6 +205,7 @@ public class A_StarSearch extends Search{
                     minHeap.add(newNode);
                 }
             }
+
             //endregion
         }
         // End Timer
@@ -199,8 +215,10 @@ public class A_StarSearch extends Search{
         Result result;
         if (type == 1) {
             result = new Result("A*1", difficulty, solution, path, time, space, executionTime);
-        } else {
+        } else if(type == 2){
             result = new Result("A*2", difficulty, solution, path, time, space, executionTime);
+        } else{
+            result = new Result("A*3", difficulty, solution, path, time, space, executionTime);
         }
 
 
