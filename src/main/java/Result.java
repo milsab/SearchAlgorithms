@@ -44,7 +44,7 @@ public class Result {
         }
         System.out.println("Solution From " + difficulty.name() + " Start to Goal: " + solution.getPathFromStart());
         System.out.println("Length: " + solution.getDepth());
-        System.out.println("Cost: " + solution.getG());
+        System.out.println("Total Cost: " + solution.getG());
         System.out.println("Time: " + time);
         System.out.println("Space: " + solution.getDepth());
 //        System.out.println("Execution Time: " + executionTime + " milliseconds");

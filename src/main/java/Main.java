@@ -63,14 +63,14 @@ public class Main {
                     Result dfsEasyResult = dfs.search(easyNode, goal, DIFFICULTY.EASY);
                     dfsEasyResult.displayResult(DIFFICULTY.EASY);
 
-                    System.out.println("\n Press any key to Search from the next Start node...");
+                    System.out.println("\n Enter 0 to Search from the next Start node...");
                     scan.next();
 
                     dfs = new DepthFirstSearch();
                     Result dfsMediumResult = dfs.search(mediumNode, goal, DIFFICULTY.MEDIUM);
                     dfsMediumResult.displayResult(DIFFICULTY.MEDIUM);
 
-                    System.out.println("\n Press any key to Search from the next Start node...");
+                    System.out.println("\n Enter 0 to Search from the next Start node...");
                     scan.next();
 
                     dfs = new DepthFirstSearch();
@@ -82,14 +82,14 @@ public class Main {
                     Result uscEasyResult = usc.search(easyNode, goal, DIFFICULTY.EASY);
                     uscEasyResult.displayResult(DIFFICULTY.EASY);
 
-                    System.out.println("\n Press any key to Search from the next Start node...");
+                    System.out.println("\n Enter 0 to Search from the next Start node...");
                     scan.next();
 
                     usc = new UniformCostSearch();
                     Result uscMediumResult = usc.search(mediumNode, goal, DIFFICULTY.MEDIUM);
                     uscMediumResult.displayResult(DIFFICULTY.MEDIUM);
 
-                    System.out.println("\n Press any key to Search from the next Start node...");
+                    System.out.println("\n Enter 0 to Search from the next Start node...");
                     scan.next();
 
                     usc = new UniformCostSearch();
@@ -101,14 +101,14 @@ public class Main {
                     Result gbfEasyResult = gbf.search(easyNode, goal, DIFFICULTY.EASY);
                     gbfEasyResult.displayResult(DIFFICULTY.EASY);
 
-                    System.out.println("\n Press any key to Search from the next Start node...");
+                    System.out.println("\n Enter 0 to Search from the next Start node...");
                     scan.next();
 
                     gbf = new BestFirstSearch();
                     Result gbfMediumResult = gbf.search(mediumNode, goal, DIFFICULTY.MEDIUM);
                     gbfMediumResult.displayResult(DIFFICULTY.MEDIUM);
 
-                    System.out.println("\n Press any key to Search from the next Start node...");
+                    System.out.println("\n Enter 0 to Search from the next Start node...");
                     scan.next();
 
                     gbf = new BestFirstSearch();
@@ -120,14 +120,14 @@ public class Main {
                     Result as1EasyResult = as1.search(easyNode, goal, (byte) 1, DIFFICULTY.EASY);
                     as1EasyResult.displayResult(DIFFICULTY.EASY);
 
-                    System.out.println("\n Press any key to Search from the next Start node...");
+                    System.out.println("\n Enter 0 to Search from the next Start node...");
                     scan.next();
 
                     as1 = new A_StarSearch();
                     Result as1MediumResult = as1.search(mediumNode, goal, (byte) 1, DIFFICULTY.MEDIUM);
                     as1MediumResult.displayResult(DIFFICULTY.MEDIUM);
 
-                    System.out.println("\n Press any key to Search from the next Start node...");
+                    System.out.println("\n Enter 0 to Search from the next Start node...");
                     scan.next();
 
                     as1 = new A_StarSearch();
@@ -139,14 +139,14 @@ public class Main {
                     Result as2EasyResult = as2.search(easyNode, goal, (byte) 2, DIFFICULTY.EASY);
                     as2EasyResult.displayResult(DIFFICULTY.EASY);
 
-                    System.out.println("\n Press any key to Search from the next Start node...");
+                    System.out.println("\n Enter 0 to Search from the next Start node...");
                     scan.next();
 
                     as2 = new A_StarSearch();
                     Result as2MediumResult = as2.search(mediumNode, goal, (byte) 2, DIFFICULTY.MEDIUM);
                     as2MediumResult.displayResult(DIFFICULTY.MEDIUM);
 
-                    System.out.println("\n Press any key to Search from the next Start node...");
+                    System.out.println("\n Enter 0 to Search from the next Start node...");
                     scan.next();
 
                     as2 = new A_StarSearch();
@@ -158,14 +158,14 @@ public class Main {
                     Result as3EasyResult = as3.search(easyNode, goal, (byte) 3, DIFFICULTY.EASY);
                     as3EasyResult.displayResult(DIFFICULTY.EASY);
 
-                    System.out.println("\n Press any key to Search from the next Start node...");
+                    System.out.println("\n Enter 0 to Search from the next Start node...");
                     scan.next();
 
                     as3 = new A_StarSearch();
                     Result as3MediumResult = as3.search(mediumNode, goal, (byte) 3, DIFFICULTY.MEDIUM);
                     as3MediumResult.displayResult(DIFFICULTY.MEDIUM);
 
-                    System.out.println("\n Press any key to Search from the next Start node...");
+                    System.out.println("\n Enter 0 to Search from the next Start node...");
                     scan.next();
 
                     as3 = new A_StarSearch();
@@ -192,7 +192,7 @@ public class Main {
                 "1) Breath First Search\n" +
                 "2) Depth First Search\n" +
                 "3) Uniform Cost Search\n" +
-                "4) Best First Search\n" +
+                "4) Greedy Best First Search\n" +
                 "5) A* (h1)\n" +
                 "6) A* (h2)\n" +
                 "7) A* (h3)\n" +

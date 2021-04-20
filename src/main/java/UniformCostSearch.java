@@ -134,7 +134,6 @@ public class UniformCostSearch extends Search{
             }
             //endregion
 
-
         }
         // End Timer
         long endTime = System.currentTimeMillis();

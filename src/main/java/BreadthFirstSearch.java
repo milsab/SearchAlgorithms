@@ -110,10 +110,6 @@ public class BreadthFirstSearch extends Search{
         resultList.add(result);
         Main.results.put(difficulty, resultList);
 
-
-//        Report report = new Report("BFS", "easy", time, space, executionTime, result);
-
-
         return result;
     }
 }
