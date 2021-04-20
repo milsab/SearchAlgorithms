@@ -8,9 +8,10 @@ public class Node {
     private int f;  // f = g + h
     private int depth; // the depth(length) of each node from root node (root depth = 0)
 
-    private int[][] rep = new int[][]{}; // representation od the node as a 2d array
-
+    private int[][] rep = new int[][]{}; // representation of the node as a 2d array
     private int row, col;   // the location of the blank tile (represented as 0)
+
+    private String pathFromStart;   // shows a path (sequence of actions) from start to the current node
 
     //endregion
 
@@ -19,26 +20,28 @@ public class Node {
     }
 
     // use for DFS and BFS Algorithms
-    public Node(int[][] rep, int row, int col, int cost, int depth) {
+    public Node(int[][] rep, int row, int col, int cost, int depth, String pathFromStart) {
         this.rep = rep;
         this.row = row;
         this.col = col;
         this.g = cost;
         this.depth = depth;
+        this.pathFromStart = pathFromStart;
     }
 
     // use for GBF (Greedy Best Search First) algorithm
-    public Node(int[][] rep, int row, int col, int cost, int heuristic, int depth) {
+    public Node(int[][] rep, int row, int col, int cost, int heuristic, int depth, String pathFromStart) {
         this.rep = rep;
         this.row = row;
         this.col = col;
         this.g = cost;
         this.h = heuristic;
         this.depth = depth;
+        this.pathFromStart = pathFromStart;
     }
 
     // use for A* algorithm
-    public Node(int[][] rep, int row, int col, int cost, int heuristic, int f, int depth) {
+    public Node(int[][] rep, int row, int col, int cost, int heuristic, int f, int depth, String pathFromStart) {
         this.rep = rep;
         this.row = row;
         this.col = col;
@@ -46,6 +49,7 @@ public class Node {
         this.h = heuristic;
         this.f = f;
         this.depth = depth;
+        this.pathFromStart = pathFromStart;
     }
 
     //endregion
@@ -170,6 +174,11 @@ public class Node {
     public void setCol(int col) {
         this.col = col;
     }
+
+    public String getPathFromStart() {
+        return pathFromStart;
+    }
+
     //endregion
 
 }

@@ -2,7 +2,15 @@ import java.util.*;
 
 public class Main {
 
-    String solution = "";
+//    public enum DIFFICULTY {
+//        EASY,
+//        MEDIUM,
+//        HARD
+//    }
+
+    static HashMap<DIFFICULTY, List<Result>> results = new HashMap<>();
+//    static List<Result> results = new ArrayList<>();
+    static List<Report> reports = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -30,23 +38,9 @@ public class Main {
                 {7, 6, 5}
         };
 
-        Node root = new Node(mediumRoot, 1, 0, 0, 0);
-
-//        Node root = new Node(mediumRoot, 1, 1, 0, 0, 0, 0);
-
-//        List<List<int[][]>> bfsPath = bfs(root, goal);
-//        printBFSPath(bfsPath);
-
-//        Result dfsPath = dfs(root, goal);
-//        printPath(dfsPath);
-
-//        UniformCostSearch usc = new UniformCostSearch();
-//        Result uscPath = usc.search(root, goal);
-//        printPath(uscPath);
-
-//        BestFirstSearch bfs = new BestFirstSearch();
-//        Result bfsPath = bfs.search(root, goal);
-//        printPath(bfsPath);
+        Node easyNode = new Node(easyRoot, 2, 1, 0, 0, "Start ");
+        Node mediumNode = new Node(mediumRoot, 1, 0, 0, 0, "Start ");
+        Node hardNode = new Node(hardRoot, 1, 1, 0, 0, "Start ");
 
         Scanner scan = new Scanner(System.in);
         int choice = -1;
@@ -56,35 +50,85 @@ public class Main {
             switch (choice){
                 case 1:
                     BreadthFirstSearch bfs = new BreadthFirstSearch();
-                    Result bfsResult = bfs.search(root, goal);
-                    bfsResult.displayResult();
+                    Result bfsEasyResult = bfs.search(easyNode, goal, DIFFICULTY.EASY);
+                    bfsEasyResult.displayResult();
+
+                    bfs = new BreadthFirstSearch();
+                    Result bfsMediumResult = bfs.search(mediumNode, goal, DIFFICULTY.MEDIUM);
+                    bfsMediumResult.displayResult();
+
+                    bfs = new BreadthFirstSearch();
+                    Result bfsHardResult = bfs.search(hardNode, goal, DIFFICULTY.HARD);
+                    bfsHardResult.displayResult();
                     break;
                 case 2:
                     DepthFirstSearch dfs = new DepthFirstSearch();
-                    Result dfsResult = dfs.search(root, goal);
-                    dfsResult.displayResult();
+                    Result dfsEasyResult = dfs.search(easyNode, goal, DIFFICULTY.EASY);
+                    dfsEasyResult.displayResult();
+
+                    dfs = new DepthFirstSearch();
+                    Result dfsMediumResult = dfs.search(mediumNode, goal, DIFFICULTY.MEDIUM);
+                    dfsMediumResult.displayResult();
+
+                    dfs = new DepthFirstSearch();
+                    Result dfsHardResult = dfs.search(hardNode, goal, DIFFICULTY.HARD);
+                    dfsHardResult.displayResult();
                     break;
                 case 3:
                     UniformCostSearch usc = new UniformCostSearch();
-                    Result uscResult = usc.search(root, goal);
-                    uscResult.displayResult();
+                    Result uscEasyResult = usc.search(easyNode, goal, DIFFICULTY.EASY);
+                    uscEasyResult.displayResult();
+
+                    usc = new UniformCostSearch();
+                    Result uscMediumResult = usc.search(mediumNode, goal, DIFFICULTY.MEDIUM);
+                    uscMediumResult.displayResult();
+
+                    usc = new UniformCostSearch();
+                    Result uscHardResult = usc.search(hardNode, goal, DIFFICULTY.HARD);
+                    uscHardResult.displayResult();
                     break;
                 case 4:
                     BestFirstSearch gbf = new BestFirstSearch();
-                    Result gbfResult = gbf.search(root, goal);
-                    gbfResult.displayResult();
+                    Result gbfEasyResult = gbf.search(easyNode, goal, DIFFICULTY.EASY);
+                    gbfEasyResult.displayResult();
+
+                    gbf = new BestFirstSearch();
+                    Result gbfMediumResult = gbf.search(mediumNode, goal, DIFFICULTY.MEDIUM);
+                    gbfMediumResult.displayResult();
+
+                    gbf = new BestFirstSearch();
+                    Result gbfHardResult = gbf.search(hardNode, goal, DIFFICULTY.HARD);
+                    gbfHardResult.displayResult();
                     break;
                 case 5:
                     A_StarSearch as1 = new A_StarSearch();
-                    Result as1Result = as1.search(root, goal, (byte) 1);
-                    as1Result.displayResult();
+                    Result as1EasyResult = as1.search(easyNode, goal, (byte) 1, DIFFICULTY.EASY);
+                    as1EasyResult.displayResult();
+
+                    as1 = new A_StarSearch();
+                    Result as1MediumResult = as1.search(mediumNode, goal, (byte) 1, DIFFICULTY.MEDIUM);
+                    as1MediumResult.displayResult();
+
+                    as1 = new A_StarSearch();
+                    Result as1HardResult = as1.search(hardNode, goal, (byte) 1, DIFFICULTY.HARD);
+                    as1HardResult.displayResult();
                     break;
                 case 6:
                     A_StarSearch as2 = new A_StarSearch();
-                    Result as2Result = as2.search(root, goal, (byte) 2);
-                    as2Result.displayResult();
+                    Result as2EasyResult = as2.search(easyNode, goal, (byte) 2, DIFFICULTY.EASY);
+                    as2EasyResult.displayResult();
+
+                    as2 = new A_StarSearch();
+                    Result as2MediumResult = as2.search(mediumNode, goal, (byte) 2, DIFFICULTY.MEDIUM);
+                    as2MediumResult.displayResult();
+
+                    as2 = new A_StarSearch();
+                    Result as2HardResult = as2.search(hardNode, goal, (byte) 2, DIFFICULTY.HARD);
+                    as2HardResult.displayResult();
                     break;
                 case 7:
+                    Result allResult = new Result();
+                    allResult.generateReport(results);
                     break;
                 default:
                     System.out.println("Invalid Choice! Please choose a number between 1 to 8.");

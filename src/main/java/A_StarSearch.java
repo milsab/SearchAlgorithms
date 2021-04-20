@@ -1,6 +1,4 @@
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class A_StarSearch extends Search{
     // define a priority queue (min heap) that always returns a node with the smallest f value (f = g + h)
@@ -32,7 +30,7 @@ public class A_StarSearch extends Search{
 
     // if the type = 1 then the A* will search with h1 function
     // if the type = 2 then the A8 will search with h2 function
-    public Result search(Node root, int[][] goal, byte type) {
+    public Result search(Node root, int[][] goal, byte type, DIFFICULTY difficulty) {
         // check the edge case
         if(type != 1 && type != 2)
             return null;
@@ -46,7 +44,7 @@ public class A_StarSearch extends Search{
         long startTime = System.currentTimeMillis();
         while(!minHeap.isEmpty()){
             // check the size of the queue and update if it is bigger than the previous max size
-            space = minHeap.size() > space ? minHeap.size() : space;
+            space = Math.max(minHeap.size(), space);
 
             Node node = minHeap.remove();
 
@@ -85,7 +83,8 @@ public class A_StarSearch extends Search{
                 int f = cost + h;
                 newGrid[row][col] = newGrid[row - 1][col];
                 newGrid[row - 1][col] = 0;
-                Node newNode = new Node(newGrid, row - 1, col, node.getG() + cost, h, node.getF() + f, depth + 1);
+                Node newNode = new Node(newGrid, row - 1, col, node.getG() + cost, h, node.getF() + f,
+                        depth + 1, node.getPathFromStart() + "-> Up ");
 
                 // add the new generated node to the priority queue if it has not visited before or
                 // its previous f value is larger than its current f value
@@ -115,7 +114,8 @@ public class A_StarSearch extends Search{
                 int f = cost + h;
                 newGrid[row][col] = newGrid[row + 1][col];
                 newGrid[row + 1][col] = 0;
-                Node newNode = new Node(newGrid, row + 1, col, node.getG() + cost, h, node.getF() + f, depth + 1);
+                Node newNode = new Node(newGrid, row + 1, col, node.getG() + cost, h, node.getF() + f,
+                        depth + 1, node.getPathFromStart() + "-> Down ");
 
                 // add the new generated node to the priority queue if it has not visited before or
                 // its previous f value is larger than its current f value
@@ -145,7 +145,8 @@ public class A_StarSearch extends Search{
                 int f = cost + h;
                 newGrid[row][col] = newGrid[row][col - 1];
                 newGrid[row][col - 1] = 0;
-                Node newNode = new Node(newGrid, row, col - 1, node.getG() + cost, h, node.getF() + f, depth + 1);
+                Node newNode = new Node(newGrid, row, col - 1, node.getG() + cost, h, node.getF() + f,
+                        depth + 1, node.getPathFromStart() + "-> Left ");
 
                 // add the new generated node to the priority queue if it has not visited before or
                 // its previous f value is larger than its current f value
@@ -175,7 +176,8 @@ public class A_StarSearch extends Search{
                 int f = cost + h;
                 newGrid[row][col] = newGrid[row][col + 1];
                 newGrid[row][col + 1] = 0;
-                Node newNode = new Node(newGrid, row, col + 1, node.getG() + cost, h, node.getF() + f, depth + 1);
+                Node newNode = new Node(newGrid, row, col + 1, node.getG() + cost, h, node.getF() + f,
+                        depth + 1, node.getPathFromStart() + "-> Right ");
 
                 // add the new generated node to the priority queue if it has not visited before or
                 // its previous f value is larger than its current f value
@@ -194,13 +196,26 @@ public class A_StarSearch extends Search{
         long endTime = System.currentTimeMillis();
         long executionTime = endTime - startTime;
 
-        Result result = new Result(solution, path, time, space, executionTime);
+        Result result;
+        if (type == 1) {
+            result = new Result("A*1", difficulty, solution, path, time, space, executionTime);
+        } else {
+            result = new Result("A*2", difficulty, solution, path, time, space, executionTime);
+        }
+
+
+        if(!Main.results.containsKey(difficulty)){
+            Main.results.put(difficulty, new ArrayList<>());
+        }
+        List<Result> resultList = Main.results.get(difficulty);
+        resultList.add(result);
+        Main.results.put(difficulty, resultList);
 
         return result;
     }
 
     @Override
-    public Result search(Node root, int[][] goal) {
+    public Result search(Node root, int[][] goal, DIFFICULTY difficulty) {
         return null;
     }
 }

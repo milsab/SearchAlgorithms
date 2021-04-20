@@ -11,5 +11,5 @@ public abstract class Search {
     protected List<int[][]> path = new ArrayList<>();
     protected Node solution;
 
-    public abstract Result search(Node root, int[][] goal);
+    public abstract Result search(Node root, int[][] goal, DIFFICULTY difficulty);
 }

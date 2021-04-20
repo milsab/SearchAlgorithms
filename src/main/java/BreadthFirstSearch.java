@@ -2,14 +2,9 @@ import java.util.*;
 
 public class BreadthFirstSearch extends Search{
     private Queue<Node> q = new LinkedList<>();
-//    private HashSet<String> visited = new HashSet<>();
-//    private List<int[][]> path = new ArrayList<>();
-//    private int time = 0;   // number of nodes popped off the queue
-//    private int space = 0;  // maintain the size of the queue at its max
-//    private Node solution;
 
     @Override
-    public Result search(Node root, int[][] goal){
+    public Result search(Node root, int[][] goal, DIFFICULTY difficulty){
         time = 0;
         space = 0;
         q.add(root);
@@ -18,7 +13,7 @@ public class BreadthFirstSearch extends Search{
         long startTime = System.currentTimeMillis();
         while(!q.isEmpty()){
             // check the size of the queue and update if it is bigger than the previous max size
-            space = q.size() > space ? q.size() : space;
+            space = Math.max(q.size(), space);
             Node node = q.remove();
 
             // increase time by one because we popped off one node from the queue
@@ -47,7 +42,8 @@ public class BreadthFirstSearch extends Search{
                 int depth = node.getDepth();
                 newGrid[row][col] = newGrid[row - 1][col];
                 newGrid[row - 1][col] = 0;
-                Node newNode = new Node(newGrid, row - 1, col, node.getG() + cost, depth + 1);
+                Node newNode = new Node(newGrid, row - 1, col, node.getG() + cost,
+                        depth + 1, node.getPathFromStart() + "-> Up ");
 
                 // add the new generated node to the queue if it has not visited before
                 if(!visited.contains(newNode.serialize()))
@@ -61,7 +57,8 @@ public class BreadthFirstSearch extends Search{
                 int depth = node.getDepth();
                 newGrid[row][col] = newGrid[row + 1][col];
                 newGrid[row + 1][col] = 0;
-                Node newNode = new Node(newGrid, row + 1, col, node.getG() + cost, depth + 1);
+                Node newNode = new Node(newGrid, row + 1, col, node.getG() + cost,
+                        depth + 1, node.getPathFromStart() + "-> Down ");
 
                 // add the new generated node to the queue if it has not visited before
                 if(!visited.contains(newNode.serialize()))
@@ -75,7 +72,8 @@ public class BreadthFirstSearch extends Search{
                 int depth = node.getDepth();
                 newGrid[row][col] = newGrid[row][col - 1];
                 newGrid[row][col - 1] = 0;
-                Node newNode = new Node(newGrid, row, col - 1, node.getG() + cost, depth + 1);
+                Node newNode = new Node(newGrid, row, col - 1, node.getG() + cost,
+                        depth + 1, node.getPathFromStart() + "-> Left ");
 
                 // add the new generated node to the queue if it has not visited before
                 if(!visited.contains(newNode.serialize()))
@@ -89,7 +87,8 @@ public class BreadthFirstSearch extends Search{
                 int depth = node.getDepth();
                 newGrid[row][col] = newGrid[row][col + 1];
                 newGrid[row][col + 1] = 0;
-                Node newNode = new Node(newGrid, row, col + 1, node.getG() + cost, depth + 1);
+                Node newNode = new Node(newGrid, row, col + 1, node.getG() + cost,
+                        depth + 1, node.getPathFromStart() + "-> Right ");
 
                 // add the new generated node to the queue if it has not visited before
                 if(!visited.contains(newNode.serialize()))
@@ -101,7 +100,17 @@ public class BreadthFirstSearch extends Search{
         long endTime = System.currentTimeMillis();
         long executionTime = endTime - startTime;
 
-        Result result = new Result(solution, path, time, space, executionTime);
+        Result result = new Result("BFS", difficulty, solution, path, time, space, executionTime);
+        if(!Main.results.containsKey(difficulty)){
+            Main.results.put(difficulty, new ArrayList<>());
+        }
+        List<Result> resultList = Main.results.get(difficulty);
+        resultList.add(result);
+        Main.results.put(difficulty, resultList);
+
+
+//        Report report = new Report("BFS", "easy", time, space, executionTime, result);
+
 
         return result;
     }

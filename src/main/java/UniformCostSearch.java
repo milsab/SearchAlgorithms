@@ -14,7 +14,7 @@ public class UniformCostSearch extends Search{
     private HashMap<String, Integer> visitedMap = new HashMap<>();
 
     @Override
-    public Result search(Node root, int[][] goal){
+    public Result search(Node root, int[][] goal, DIFFICULTY difficulty){
         minHeap.add(root);
 
         // Start Timer
@@ -22,7 +22,7 @@ public class UniformCostSearch extends Search{
         while(!minHeap.isEmpty()){
 
             // check the size of the queue and update if it is bigger than the previous max size
-            space = minHeap.size() > space ? minHeap.size() : space;
+            space = Math.max(minHeap.size(), space);
 
             Node node = minHeap.remove();
 
@@ -52,7 +52,8 @@ public class UniformCostSearch extends Search{
                 int depth = node.getDepth();
                 newGrid[row][col] = newGrid[row - 1][col];
                 newGrid[row - 1][col] = 0;
-                Node newNode = new Node(newGrid, row - 1, col, node.getG() + cost, depth + 1);
+                Node newNode = new Node(newGrid, row - 1, col, node.getG() + cost,
+                        depth + 1, node.getPathFromStart() + "-> Up ");
 
                 // add the new generated node to the priority queue if it has not visited before or
                 // the the its previous cost is larger than its current cost
@@ -73,7 +74,8 @@ public class UniformCostSearch extends Search{
                 int depth = node.getDepth();
                 newGrid[row][col] = newGrid[row + 1][col];
                 newGrid[row + 1][col] = 0;
-                Node newNode = new Node(newGrid, row + 1, col, node.getG() + cost, depth + 1);
+                Node newNode = new Node(newGrid, row + 1, col, node.getG() + cost,
+                        depth + 1, node.getPathFromStart() + "-> Down ");
 
                 // add the new generated node to the priority queue if it has not visited before or
                 // the the its previous cost is larger than its current cost
@@ -94,7 +96,8 @@ public class UniformCostSearch extends Search{
                 int depth = node.getDepth();
                 newGrid[row][col] = newGrid[row][col - 1];
                 newGrid[row][col - 1] = 0;
-                Node newNode = new Node(newGrid, row, col - 1, node.getG() + cost, depth + 1);
+                Node newNode = new Node(newGrid, row, col - 1, node.getG() + cost,
+                        depth + 1, node.getPathFromStart() + "-> Left ");
 
                 // add the new generated node to the priority queue if it has not visited before or
                 // the the its previous cost is larger than its current cost
@@ -115,7 +118,8 @@ public class UniformCostSearch extends Search{
                 int depth = node.getDepth();
                 newGrid[row][col] = newGrid[row][col + 1];
                 newGrid[row][col + 1] = 0;
-                Node newNode = new Node(newGrid, row, col + 1, node.getG() + cost, depth + 1);
+                Node newNode = new Node(newGrid, row, col + 1, node.getG() + cost,
+                        depth + 1, node.getPathFromStart() + "-> Right ");
 
                 // add the new generated node to the priority queue if it has not visited before or
                 // the the its previous cost is larger than its current cost
@@ -136,7 +140,13 @@ public class UniformCostSearch extends Search{
         long endTime = System.currentTimeMillis();
         long executionTime = endTime - startTime;
 
-        Result result = new Result(solution, path, time, space, executionTime);
+        Result result = new Result("UCS", difficulty, solution, path, time, space, executionTime);
+        if(!Main.results.containsKey(difficulty)){
+            Main.results.put(difficulty, new ArrayList<>());
+        }
+        List<Result> resultList = Main.results.get(difficulty);
+        resultList.add(result);
+        Main.results.put(difficulty, resultList);
 
         return result;
     }
