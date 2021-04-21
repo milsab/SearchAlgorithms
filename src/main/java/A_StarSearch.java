@@ -29,8 +29,9 @@ public class A_StarSearch extends Search{
         goalMap = map;
     }
 
-    // if the type = 1 then the A* will search with h1 function
-    // if the type = 2 then the A8 will search with h2 function
+    // if the type = 1 then the A* will search with h1 function (No. of tiles that are not in correct position)
+    // if the type = 2 then the A8 will search with h2 function (sum of Manhattan distances between all tiles and their correct positions)
+    // if the type = 3 then the A8 will search with h3 function (sum of Euclidean distances between all tiles and their correct positions)
     public Result search(Node root, int[][] goal, byte type, DIFFICULTY difficulty) {
         // check the edge cases
         if(type != 1 && type != 2 && type != 3)
